@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 
+//@ts-ignore
+import { StateContextProvider } from "./context";
 import App from "./App";
 import "./index.css";
 
@@ -13,7 +15,9 @@ root.render(
   //@ts-ignore
   <ThirdwebProvider desiredChainId={ChainId.Sepolia}>
     <Router>
-      <App />
+      <StateContextProvider>
+        <App />
+      </StateContextProvider>
     </Router>
   </ThirdwebProvider>
 );
