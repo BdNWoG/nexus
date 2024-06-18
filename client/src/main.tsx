@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   //@ts-ignore
-  <ThirdwebProvider desiredChainId={ChainId.Sepolia}>
+  <ThirdwebProvider activeChain="sepolia" clientId="f326977a26cf4d78024ab670b2f6a348">
     <Router>
       <StateContextProvider>
         <App />
