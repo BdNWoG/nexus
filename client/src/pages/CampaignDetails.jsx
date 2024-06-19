@@ -9,13 +9,28 @@ import { thirdweb } from '../assets'
 
 const CampaignDetails = () => {
   const { state } = useLocation();
-  const { getDonations, contract, address } = useStateContext();
+  const { donate, getDonations, contract, address } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState('');
   const [donators, setDonators] = useState([]);
 
   const remainingDays = daysLeft(state.deadline);
+
+  const fetchDonators = async () => {
+    const data = await getDonations(state.pId)
+    setDonators(data);
+  }
+
+  useEffect(() => {
+    if(contract) fetchDonators();
+  }, [contract, address]);
+
+  const handleDonate = async () => {
+    setIsLoading(true);
+    await donate(state.pId, amount)
+    setIsLoading(false);
+  }
 
   return (
     <div>
@@ -98,9 +113,15 @@ const CampaignDetails = () => {
             <div className='mt-[30px]'>
               <input type="number" placeholder='ETH 0.1' step='0.01' value={amount} onChange={(e) => setAmount(e.target.value)}
               className='w-full py-[10px] sm:px-[20px] px-[15px] outline-none border-[1px] border-[#3a3a43] bg-transparent font-epilogue text-white text-[18px] placeholder:text-[#4b5264] leading-[30px] rounded-[10px]'/>
-              <div>
-                
+              <div className='my-[20px] p-4 bg-[#13131a] rounded-[10px]'>
+                <h4 className='font-epilogue font-semibold text-[14px] leading-[22px] text-white'>
+                  Back the Project!
+                </h4>
+                <p className='mt-[20px] font-epilogue font-normal leading-[22px] text-[#808191]'>
+                  Support the Cause just because it speaks to you. 
+                </p>
               </div>
+              <CustomButton btnType='button' title='Fund Campaign' styles='w-full bg-[#8c6dfd]' handleClick={handleDonate}/>
             </div>
           </div>
         </div>
